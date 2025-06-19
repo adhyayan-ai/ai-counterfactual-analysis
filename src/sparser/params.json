@@ -1,0 +1,32 @@
+{
+    "length (hours)": {
+        "min": 0, 
+        "max": 168, 
+        "step": 10
+    }, 
+    "percent_masking": {
+        "min": 0,
+        "max": 100,
+        "step": 10
+    }, 
+    "percent_vaccinated": {
+        "min": 0,
+        "max": 100,
+        "step": 10
+    }, 
+    "facility_capacity": {
+        "min": 0,
+        "max": 100,
+        "step": 10
+    }, 
+    "lockdown_probability": {
+        "min": 0,
+        "max": 100,
+        "step": 10
+    }, 
+    "self_isolation_percent": {
+        "min": 0,
+        "max": 100,
+        "step": 10
+    }
+}

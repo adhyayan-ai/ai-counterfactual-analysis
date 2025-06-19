@@ -1,0 +1,1 @@
+# to convert simulator logs to structured format for clustering
