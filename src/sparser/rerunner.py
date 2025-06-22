@@ -1,22 +1,25 @@
-# reruns with slight tweaks in parameters
-
+# reruns with different parameters
+import requests 
+import json 
 from pathlib import Path
-import subprocess
-import json
 
-def save_config(run_id, config, base_dir = "../data/raw"): 
-    run_folder = Path(base_dir) / f"run_{run_id:03}"
-    run_folder.mksir(parents = True, exist_ok = True)
-    config_path = run_folder / "config.json"
-    with open(config_path, 'w') as f:
-        json.dump(config, f, indent = 2)
+def send_simulation_request(config, server_url = "http://127.0.0.1:5000/simulation/"):
+    '''
+        Sends a simulation request to Flask server on app.py in Simulation repo. 
+        Args:
+            config (dict): Configuration dictionary containing simulation parameters (generated in scenario_selector.py).
+            server_url (str): URL of the Flask server endpoint.
 
-    return run_folder, config_path
+        Returns:
+            dict: Response from the server, typically containing simulation results.
+    '''
+    headers = {'Content-Type': 'application/json'}
 
-def batch_run_simulation_cli(config_path, output_dir): 
-    simulator_dir = Path("../../../../Simulation/simulator/simulate.py")
-    subprocess.run([
-        "python", "simulate.py", 
-        "--config", str(config_path), 
-        "--output", str(output_dir)
-    ], cwd = simulator_dir)
+    try:
+        response = requests.post(server_url, headers = headers, json = config)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e: 
+        print(f"Error sending request: {e}")
+        return None
+    
