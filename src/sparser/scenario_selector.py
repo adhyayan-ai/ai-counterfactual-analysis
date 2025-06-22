@@ -1,9 +1,11 @@
 # identifies impactful parameter combinations
 import json
 import numpy as np 
-import itertools
+import itertools # to generate combinations
 import random 
+from scipy.stats import qmc
 
+# converts json file to python dictionary 
 def load_parameter_space(json_path): 
     with open(json_path, 'r') as file:
         return json.load(file)
@@ -24,6 +26,22 @@ def sample_random(grid, k = 20, seed = 40):
     random.seed(seed)
     return random.sample(grid, min(k, len(grid)))
 
+def latin_hypercube_sample(param_space, n_samples = 50, seed = 30): 
+    keys = list(param_space.keys())
+    d = len(keys)
+    l_bounds = [param_space[k]['min'] for k in keys]
+    u_bounds = [param_space[k]['max'] for k in keys]
+
+    sampler = qmc.LatinHypercube(d = d, seed = seed)
+    sample = sampler.random(n = n_samples)
+    sample_scaled = qmc.scale(sample, l_bounds, u_bounds)
+
+    samples = []
+    for row in sample_scaled: 
+        config = {k: float(round(v, 6)) for k, v in zip(keys, row)}
+        samples.append(config)
+
+    return samples
 if __name__ == "__main__":
     param_space = load_parameter_space('params.json')
 
