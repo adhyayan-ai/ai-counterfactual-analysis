@@ -10,6 +10,9 @@ def load_parameter_space(json_path):
     with open(json_path, 'r') as file:
         return json.load(file)
     
+
+# generating all combinations of parameters
+# to be used with random sampling 
 def generate_param_combinations(param_space): 
     param_values = {}
     for param, cfg in param_space.items(): 
@@ -22,11 +25,24 @@ def generate_param_combinations(param_space):
     param_grid = [dict(zip(keys, vals)) for vals in product]
     return param_grid 
 
+
+# random sampling from parameter grid 
 def sample_random(grid, k = 20, seed = 40): 
     random.seed(seed)
     return random.sample(grid, min(k, len(grid)))
 
+# Latin Hypercube sampling is a sampling technique that ensures we explore parameter space evenly and efficiently. 
+# https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.qmc.LatinHypercube.html
 def latin_hypercube_scaled(param_space, n_samples = 50, seed = 30): 
+    '''
+    Generates Latin Hypercube samples from the parameter space.
+    Args:
+        param_space (dict): Dictionary containing parameter configurations with 'min', 'max', and 'step' keys. 
+        n_samples (int): Number of samples to generate.
+        seed (int): Random seed for reproducibility.
+    Returns:
+        List of dictionaries, each representing a sample configuration with parameter values.
+    '''
     keys = list(param_space.keys())
     d = len(keys)
     l_bounds = [param_space[k]['min'] for k in keys]
@@ -42,6 +58,7 @@ def latin_hypercube_scaled(param_space, n_samples = 50, seed = 30):
         samples.append(config)
 
     return samples
+
 if __name__ == "__main__":
     param_space = load_parameter_space('params.json')
 
