@@ -26,7 +26,7 @@ def sample_random(grid, k = 20, seed = 40):
     random.seed(seed)
     return random.sample(grid, min(k, len(grid)))
 
-def latin_hypercube_sample(param_space, n_samples = 50, seed = 30): 
+def latin_hypercube_scaled(param_space, n_samples = 50, seed = 30): 
     keys = list(param_space.keys())
     d = len(keys)
     l_bounds = [param_space[k]['min'] for k in keys]
@@ -45,6 +45,14 @@ def latin_hypercube_sample(param_space, n_samples = 50, seed = 30):
 if __name__ == "__main__":
     param_space = load_parameter_space('params.json')
 
+    # Latin Hypercube sampling
+    lhs_samples = latin_hypercube_scaled(param_space, n_samples = 50)
+    for i, s in enumerate(lhs_samples):
+        print(f"Sample {i + 1}: {s}")
+
+
+    '''
+    # Random sampling 
     full_grid = generate_param_combinations(param_space)
     print(f"Total combinations: {len(full_grid)}")
 
@@ -52,3 +60,5 @@ if __name__ == "__main__":
 
     for i, run in enumerate(sampled_runs):
         print(f"Run {i + 1}: {run}")
+
+    '''
