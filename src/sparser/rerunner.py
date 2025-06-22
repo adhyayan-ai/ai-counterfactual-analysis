@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import subprocess
+import json
 
 def save_config(run_id, config, base_dir = "../data/raw"): 
     run_folder = Path(base_dir) / f"run_{run_id:03}"
