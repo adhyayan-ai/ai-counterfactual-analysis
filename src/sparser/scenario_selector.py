@@ -1,4 +1,5 @@
-# identifies impactful parameter combinations
+# program to generate a sample of parameter combinations
+
 import json
 import numpy as np 
 import itertools # to generate combinations
