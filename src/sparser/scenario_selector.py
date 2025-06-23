@@ -55,10 +55,10 @@ def latin_hypercube_scaled(param_space, n_samples = 50, seed = 30):
 
     samples = []
     for row in sample_scaled: 
-        config = {k: float(round(v, 6)) for k, v in zip(keys, row)}
+        config = {k: float(round(v, 5)) for k, v in zip(keys, row)}
         samples.append(config)
 
-    return samples
+    return samples # samples is a list of dictionaries, each representing a sample configuration with parameter values
 
 if __name__ == "__main__":
     param_space = load_parameter_space('params.json')
